@@ -1,5 +1,13 @@
 package alapmuvgyak;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+
 public class Muveletek extends javax.swing.JFrame {
 
     /**
@@ -20,6 +28,7 @@ public class Muveletek extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jFileChooser1 = new javax.swing.JFileChooser();
         pnlGyakorlas = new javax.swing.JPanel();
         lblFeladat = new javax.swing.JLabel();
         txtEredmeny = new javax.swing.JTextField();
@@ -196,6 +205,11 @@ public class Muveletek extends javax.swing.JFrame {
         mnuMentesMaskent.add(mnuFajlMegnyit);
 
         mnuFajlMent.setText("Ment");
+        mnuFajlMent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuFajlMentActionPerformed(evt);
+            }
+        });
         mnuMentesMaskent.add(mnuFajlMent);
 
         jMenuItem2.setText("Mentés másként...");
@@ -210,19 +224,19 @@ public class Muveletek extends javax.swing.JFrame {
         mnuMuvelet.setText("Műveletek");
         buttonGroup1.add(mnuMuvelet);
 
-        mnuMuveletOsszeadas.setSelected(true);
+        buttonGroup1.add(mnuMuveletOsszeadas);
         mnuMuveletOsszeadas.setText("Összeadas");
         mnuMuvelet.add(mnuMuveletOsszeadas);
 
-        mnuMuveletKivonas.setSelected(true);
+        buttonGroup1.add(mnuMuveletKivonas);
         mnuMuveletKivonas.setText("Kivonas");
         mnuMuvelet.add(mnuMuveletKivonas);
 
-        mnuMuveletOsztas.setSelected(true);
+        buttonGroup1.add(mnuMuveletOsztas);
         mnuMuveletOsztas.setText("Osztás");
         mnuMuvelet.add(mnuMuveletOsztas);
 
-        mnuMuveletSzorzas.setSelected(true);
+        buttonGroup1.add(mnuMuveletSzorzas);
         mnuMuveletSzorzas.setText("Szorzás");
         mnuMuvelet.add(mnuMuveletSzorzas);
 
@@ -262,7 +276,28 @@ public class Muveletek extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mnuFajlMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMentActionPerformed
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Fájl mentése");
+        fc.setCurrentDirectory(new File("."));
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        int választottGombErteke = fc.showSaveDialog(this);
+        if(választottGombErteke == JFileChooser.APPROVE_OPTION){
+            File f = fc.getSelectedFile();
+            if (f.isDirectory()) {
+                lblEredmeny.setText("<html>Elérése: " + f.getPath() + "<br>Könyvtár: " + f.getName() + "</html>");
+                try {
+                    Files.write(Paths.get(f.getPath(), "stat.txt"), "Statisztika:".getBytes());
+                } catch (IOException ex) {
+                    Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }//GEN-LAST:event_mnuFajlMentActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,6 +342,7 @@ public class Muveletek extends javax.swing.JFrame {
     private javax.swing.JButton btnMegoldas;
     private javax.swing.JButton btnUj;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -337,4 +373,8 @@ public class Muveletek extends javax.swing.JFrame {
     private javax.swing.JPanel pnlGyakorlas;
     private javax.swing.JTextField txtEredmeny;
     // End of variables declaration//GEN-END:variables
+
+    private void getBytes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
