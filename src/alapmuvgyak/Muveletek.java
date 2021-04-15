@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Muveletek extends javax.swing.JFrame {
@@ -54,7 +56,7 @@ public class Muveletek extends javax.swing.JFrame {
         mnuMentesMaskent = new javax.swing.JMenu();
         mnuFajlMegnyit = new javax.swing.JMenuItem();
         mnuFajlMent = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mnuFajlMentesMaskent = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mnuFajlKilep = new javax.swing.JMenuItem();
         mnuMuvelet = new javax.swing.JMenu();
@@ -214,13 +216,13 @@ public class Muveletek extends javax.swing.JFrame {
         });
         mnuMentesMaskent.add(mnuFajlMent);
 
-        jMenuItem2.setText("Mentés másként...");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        mnuFajlMentesMaskent.setText("Mentés másként...");
+        mnuFajlMentesMaskent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                mnuFajlMentesMaskentActionPerformed(evt);
             }
         });
-        mnuMentesMaskent.add(jMenuItem2);
+        mnuMentesMaskent.add(mnuFajlMentesMaskent);
         mnuMentesMaskent.add(jSeparator1);
 
         mnuFajlKilep.setText("Kilép");
@@ -306,7 +308,7 @@ public class Muveletek extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuFajlMentActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void mnuFajlMentesMaskentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMentesMaskentActionPerformed
         JFileChooser fc = new JFileChooser(new File("."));
         fc.setDialogTitle("Mentés másként");
 
@@ -316,25 +318,51 @@ public class Muveletek extends javax.swing.JFrame {
         fc.addChoosableFileFilter(imgFilter);
         FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("csak szöveg (*.txt)", "txt");
         fc.addChoosableFileFilter(txtFilter);
-        FileNameExtensionFilter cspFilter = new FileNameExtensionFilter("saját (*.csp)", "csp");
+        FileNameExtensionFilter cspFilter = new FileNameExtensionFilter("saját (*.kn)", "kn");
         fc.addChoosableFileFilter(cspFilter);
-        
+
         fc.setFileFilter(txtFilter);
 
-        int választottGombErteke = fc.showSaveDialog(this);
-        if (választottGombErteke == JFileChooser.APPROVE_OPTION) {
+        /* Tesztesetek:
+        - kiterjesztés megváltoztatása
+        - olyan kiterjesztés írása, ami nincs a listában
+        - üresen marad a fájl neve
+        - másik mappa kiválasztása
+        - ha kiterjesztéssel választom a meglévő fájlt, akkor megint rakja a kiterjesztést.
+        - ha létezik a fájl, akkor krdés nélkül felülírja
+         */
+        int valasztottGombErteke = fc.showSaveDialog(this);
+        if (valasztottGombErteke == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
-            String[] kit = ((FileNameExtensionFilter)fc.getFileFilter()).getExtensions();
-            String fn = f.getName() + "." + kit[0];
-            lblEredmeny.setText("<html>Elérése: " + f.getPath() + "<br>Fájl neve: " + f.getName() + "</html>");
+            String[] kit = ((FileNameExtensionFilter) fc.getFileFilter()).getExtensions();
+            String fn = f.getPath()/*f.getName() + "." + kit[0]*/;
+
+            /* csak egyszer rakja mögé a kiterjesztést */
+            if (!fn.endsWith("." + kit[0])) {
+                fn += "." + kit[0];
+            }
+
+            boolean mentes = true;
+            /* ha már létezik */
+            Path path = Paths.get(fn);
+            if (Files.exists(path)) {
+                valasztottGombErteke = JOptionPane.showConfirmDialog(this, "A fájl létezik!\nFelülírjam?", "A fájl már létezik!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (valasztottGombErteke == JOptionPane.NO_OPTION) {
+                    mentes = false;
+                }
+            }
+
+            lblEredmeny.setText("<html>Elérése: " + fn/*f.getPath()*/ + "<br>Fájl neve: " + f.getName() + "." + kit[0] + "</html>");
             try {
-                Files.write(Paths.get(f.getPath() + "." + kit[0]), "Statisztika:".getBytes());
+                Files.write(path/*Paths.get(fn/*f.getPath() + "." + kit[0])*/, "Statisztika:".getBytes());
             } catch (IOException ex) {
                 Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        }else{
+            JOptionPane.showMessageDialog(this, "Mentés megszakítva!", "NINCS MENTÉS!", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_mnuFajlMentesMaskentActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,7 +410,6 @@ public class Muveletek extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel lblEredmeny;
@@ -401,6 +428,7 @@ public class Muveletek extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuFajlKilep;
     private javax.swing.JMenuItem mnuFajlMegnyit;
     private javax.swing.JMenuItem mnuFajlMent;
+    private javax.swing.JMenuItem mnuFajlMentesMaskent;
     private javax.swing.JMenu mnuMentesMaskent;
     private javax.swing.JMenu mnuMuvelet;
     private javax.swing.JRadioButtonMenuItem mnuMuveletKivonas;
