@@ -206,6 +206,11 @@ public class Muveletek extends javax.swing.JFrame {
         mnuMentesMaskent.setText("Fájl");
 
         mnuFajlMegnyit.setText("Megnyit");
+        mnuFajlMegnyit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuFajlMegnyitActionPerformed(evt);
+            }
+        });
         mnuMentesMaskent.add(mnuFajlMegnyit);
 
         mnuFajlMent.setText("Ment");
@@ -287,7 +292,7 @@ public class Muveletek extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     String mentettFajl;
     private void mnuFajlMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMentActionPerformed
 //        JFileChooser fc = new JFileChooser();
@@ -322,7 +327,7 @@ public class Muveletek extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuFajlMentActionPerformed
 
     private void mnuFajlMentesMaskentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMentesMaskentActionPerformed
-        /* név és hely választás */ 
+        /* név és hely választás */
         JFileChooser fc = new JFileChooser(new File("."));
         fc.setDialogTitle("Mentés másként");
 
@@ -369,7 +374,7 @@ public class Muveletek extends javax.swing.JFrame {
 
             lblEredmeny.setText("<html>Elérése: " + fn/*f.getPath()*/ + "<br>Fájl neve: " + f.getName() + "." + kit[0] + "</html>");
             /* név és hely választás VÉGE */
-            /* ez írja ki */
+ /* ez írja ki */
             try {
                 if (mentes) {
                     Files.write(path/*Paths.get(fn/*f.getPath() + "." + kit[0])*/, "Statisztika: új".getBytes());
@@ -382,6 +387,32 @@ public class Muveletek extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Mentés megszakítva!", "NINCS MENTÉS!", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_mnuFajlMentesMaskentActionPerformed
+
+    private void mnuFajlMegnyitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuFajlMegnyitActionPerformed
+        JFileChooser fc = new JFileChooser(new File("."));
+        fc.setDialogTitle("Fájl megnyitása...");
+
+        fc.setAcceptAllFileFilterUsed(false); //nincs Minden fájl
+
+        FileNameExtensionFilter imgFilter = new FileNameExtensionFilter("PNG és GIF képek", "png", "gif");
+        fc.addChoosableFileFilter(imgFilter);
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("csak szöveg (*.txt)", "txt");
+        fc.addChoosableFileFilter(txtFilter);
+        FileNameExtensionFilter knFilter = new FileNameExtensionFilter("saját (*.kn)", "kn");
+        fc.addChoosableFileFilter(knFilter);
+
+        fc.setFileFilter(txtFilter);
+
+        fc.setAcceptAllFileFilterUsed(true);
+        int valasztottGomb = fc.showOpenDialog(this);
+        if (valasztottGomb == JFileChooser.APPROVE_OPTION) {
+            File f = fc.getSelectedFile();
+            String fn = f.getPath();
+            lblEredmeny.setText("<html>Elérés: " + fn + "<br>Fájl neve: " + f.getName() + "</html>");
+        } else {
+            JOptionPane.showMessageDialog(this, "Megnyitás megszakítva", "NINCS MEGNYITAS", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_mnuFajlMegnyitActionPerformed
 
     /**
      * @param args the command line arguments
