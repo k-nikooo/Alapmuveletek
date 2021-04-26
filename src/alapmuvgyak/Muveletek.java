@@ -446,20 +446,63 @@ public class Muveletek extends javax.swing.JFrame {
             File f = fc.getSelectedFile();
             String fn = f.getPath();
             lblEredmeny.setText("<html>Elérés: " + fn + "<br>Fájl neve: " + f.getName() + "</html>");
-            
+
             Path path = Paths.get(fn);
             try {
                 //byte[] bajtTomb = Files.readAllBytes(path); //betünként, ráadásul ASCII kóddal
                 //byte egyBajt = bajtTomb[1];
- 
+
                 List<String> stringLista = Files.readAllLines(path);
                 String egySor = stringLista.get(1);
-                String[] adatok = egySor.split(":");
+                String[] adatok = egySor.split(": ");
+                //int szam = Integer.parseInt(adatok[2]);
+                String proSz = adatok[2];
+                lblOsszProba.setText("Össz Probálkozások száma: " + proSz);
+                adatok = adatok[1].split(" ");
+                String kerSz = adatok[0];
+                lblOsszKerdes.setText("Össz Kérdések száma: " + kerSz);
                 //"".trim()
+                
+                //összeadás
+                egySor = stringLista.get(2);
+                adatok = egySor.split(": ");
+                proSz = adatok[2];
+                lblOsszeadProba.setText("Összadás: " + proSz);
+                adatok = adatok[1].split(" ");
+                kerSz = adatok[0];
+                lblOsszeadKerdes.setText("Összeadás: " + kerSz);
+                
+                //kivonás
+                egySor = stringLista.get(3);
+                adatok = egySor.split(": ");
+                proSz = adatok[2];
+                lblKivonasProba.setText("Kivonás: " + proSz);
+                adatok = adatok[1].split(" ");
+                kerSz = adatok[0];
+                lblKivonasKerdes.setText("Kivonás: " + kerSz);
+                
+                //osztás
+                egySor = stringLista.get(4);
+                adatok = egySor.split(": ");
+                proSz = adatok[2];
+                lblOsztasProba.setText("Osztás: " + proSz);
+                adatok = adatok[1].split(" ");
+                kerSz = adatok[0];
+                lblOsztasKerdes.setText("Osztás: " + kerSz);
+                
+                //szorzás
+                egySor = stringLista.get(5);
+                adatok = egySor.split(": ");
+                proSz = adatok[2];
+                lblSzorzasProba.setText("Szorzás: " + proSz);
+                adatok = adatok[1].split(" ");
+                kerSz = adatok[0];
+                lblSzorzasKerdes.setText("Szorzás: " + kerSz);
+                
             } catch (IOException ex) {
                 Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Megnyitás megszakítva", "NINCS MEGNYITAS", JOptionPane.INFORMATION_MESSAGE);
         }
