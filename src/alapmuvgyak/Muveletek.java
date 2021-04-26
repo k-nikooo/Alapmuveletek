@@ -26,9 +26,15 @@ public class Muveletek extends javax.swing.JFrame {
     int osztasProba = 0;
     int szorzasProba = 0;
     int osszProbalkozasSzama = 0;
+    
+    JLabel[] lblTomb;
+    String[] lblTextTomb;
 
     public Muveletek() {
         initComponents();
+        
+        lblTomb = new JLabel[]{lblOsszKerdes, lblOsszProba, lblOsszeadKerdes, lblOsszeadProba, lblKivonasKerdes, lblKivonasProba, lblOsztasKerdes, lblOsztasProba, lblSzorzasKerdes, lblSzorzasProba};
+        lblTextTomb = new String[]{"Össz kérdések száma: ", "Össz Probálkozások száma: ", "Összeadás: ", "Összeadás: ", "Kivonás: ", "Kivonás: ", "Osztás: ", "Osztás: ", "Szorzás: ", "Szorzás: "};
     }
 
     @SuppressWarnings("unchecked")
@@ -321,8 +327,8 @@ public class Muveletek extends javax.swing.JFrame {
                         .addComponent(btnMegoldas))
                     .addComponent(pnlGyakorlas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -453,52 +459,64 @@ public class Muveletek extends javax.swing.JFrame {
                 //byte egyBajt = bajtTomb[1];
 
                 List<String> stringLista = Files.readAllLines(path);
-                String egySor = stringLista.get(1);
-                String[] adatok = egySor.split(": ");
-                //int szam = Integer.parseInt(adatok[2]);
-                String proSz = adatok[2];
-                lblOsszProba.setText("Össz Probálkozások száma: " + proSz);
-                adatok = adatok[1].split(" ");
-                String kerSz = adatok[0];
-                lblOsszKerdes.setText("Össz Kérdések száma: " + kerSz);
-                //"".trim()
-                
-                //összeadás
-                egySor = stringLista.get(2);
-                adatok = egySor.split(": ");
-                proSz = adatok[2];
-                lblOsszeadProba.setText("Összadás: " + proSz);
-                adatok = adatok[1].split(" ");
-                kerSz = adatok[0];
-                lblOsszeadKerdes.setText("Összeadás: " + kerSz);
-                
-                //kivonás
-                egySor = stringLista.get(3);
-                adatok = egySor.split(": ");
-                proSz = adatok[2];
-                lblKivonasProba.setText("Kivonás: " + proSz);
-                adatok = adatok[1].split(" ");
-                kerSz = adatok[0];
-                lblKivonasKerdes.setText("Kivonás: " + kerSz);
-                
-                //osztás
-                egySor = stringLista.get(4);
-                adatok = egySor.split(": ");
-                proSz = adatok[2];
-                lblOsztasProba.setText("Osztás: " + proSz);
-                adatok = adatok[1].split(" ");
-                kerSz = adatok[0];
-                lblOsztasKerdes.setText("Osztás: " + kerSz);
-                
-                //szorzás
-                egySor = stringLista.get(5);
-                adatok = egySor.split(": ");
-                proSz = adatok[2];
-                lblSzorzasProba.setText("Szorzás: " + proSz);
-                adatok = adatok[1].split(" ");
-                kerSz = adatok[0];
-                lblSzorzasKerdes.setText("Szorzás: " + kerSz);
-                
+                int lblIndex = 0;
+                for (int i = 1; i < stringLista.size(); i++) {
+                    String egySor = stringLista.get(i);
+                    String[] adatok = egySor.split(": ");
+                    JLabel lbl = lblTomb[lblIndex + 1]; //lblOsszProba;
+                    lbl.setText(lblTextTomb[lblIndex + 1] +adatok[2]);
+                    adatok = adatok[1].split(" ");
+                    lbl = lblTomb[lblIndex]; //lblOsszKerdes;
+                    lbl.setText(lblTextTomb[lblIndex] + adatok[0]);
+                    lblIndex += 2;
+                }
+
+//                //fejlécc: Össz
+//                String egySor = stringLista.get(1);
+//                String[] adatok = egySor.split(": ");
+//                //int szam = Integer.parseInt(adatok[2]);
+//                String proSz = adatok[2];
+//                lblOsszProba.setText("Össz Probálkozások száma: " + proSz);
+//                adatok = adatok[1].split(" ");
+//                String kerSz = adatok[0];
+//                lblOsszKerdes.setText("Össz Kérdések száma: " + kerSz);
+//                //"".trim()
+//
+//                //összeadás
+//                egySor = stringLista.get(2);
+//                adatok = egySor.split(": ");
+//                proSz = adatok[2];
+//                lblOsszeadProba.setText("Összadás: " + proSz);
+//                adatok = adatok[1].split(" ");
+//                kerSz = adatok[0];
+//                lblOsszeadKerdes.setText("Összeadás: " + kerSz);
+//
+//                //kivonás
+//                egySor = stringLista.get(3);
+//                adatok = egySor.split(": ");
+//                proSz = adatok[2];
+//                lblKivonasProba.setText("Kivonás: " + proSz);
+//                adatok = adatok[1].split(" ");
+//                kerSz = adatok[0];
+//                lblKivonasKerdes.setText("Kivonás: " + kerSz);
+//
+//                //osztás
+//                egySor = stringLista.get(4);
+//                adatok = egySor.split(": ");
+//                proSz = adatok[2];
+//                lblOsztasProba.setText("Osztás: " + proSz);
+//                adatok = adatok[1].split(" ");
+//                kerSz = adatok[0];
+//                lblOsztasKerdes.setText("Osztás: " + kerSz);
+//
+//                //szorzás
+//                egySor = stringLista.get(5);
+//                adatok = egySor.split(": ");
+//                proSz = adatok[2];
+//                lblSzorzasProba.setText("Szorzás: " + proSz);
+//                adatok = adatok[1].split(" ");
+//                kerSz = adatok[0];
+//                lblSzorzasKerdes.setText("Szorzás: " + kerSz);
             } catch (IOException ex) {
                 Logger.getLogger(Muveletek.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -666,9 +684,6 @@ public class Muveletek extends javax.swing.JFrame {
 
     private String tartalomOsszeallitasa() {
         String statisztika = "Az alapműveletek gyakoroltatása statisztika:\n";
-
-        JLabel[] lblTomb = new JLabel[]{lblOsszKerdes, lblOsszProba, lblOsszeadKerdes, lblOsszeadProba, lblKivonasKerdes, lblKivonasProba, lblOsztasKerdes, lblOsztasProba, lblSzorzasKerdes, lblSzorzasProba};
-
         final int HE = 3; //Helyi érték 3 helyen
         final int KERDES_MAX_HOSSZ = lblTomb[0].getText().length();
         final int PROBA_MAX_HOSSZ = lblTomb[1].getText().length();
